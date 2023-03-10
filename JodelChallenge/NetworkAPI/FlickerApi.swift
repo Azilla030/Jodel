@@ -10,19 +10,19 @@ import UIKit
 
 
 class FlickrApiSwift {
-    static func fetchPhotos(completion: @escaping ([URL]?, Error?) -> Void) {
+    static func fetchPhotos(page: Int, perPage:Int,  completion: @escaping ([FlickrImage]?, Error?) -> Void) {
         let fk = FlickrKit.shared()
         fk.initialize(withAPIKey: "92111faaf0ac50706da05a1df2e85d82", sharedSecret: "89ded1035d7ceb3a")
         
         let interesting = FKFlickrInterestingnessGetList()
-        interesting.per_page = "10"
-        interesting.page = "1"
+        interesting.per_page = "30"
+        interesting.page = "\(page)"
         
         
         fk.call(interesting) { response, error in
-            var photoURLs: [URL]?
+            var photos: [FlickrImage]?
             if let response = response {
-                photoURLs = []
+                photos = []
                 if let photosDictionary = response as? [String: Any],
                    let photosArray = photosDictionary["photos"] as? [String: Any],
                    let photoDictionaries = photosArray["photo"] as? [[String: Any]] {
@@ -31,14 +31,16 @@ class FlickrApiSwift {
                         if let title = photoData["title"] as? String {
                             let image = FlickrImage(title: title, url: photoURL)
                             // Use the FlickrImage object as needed
-                            print(image)
+                            photos?.append(image)
+                            
                         }
                         
                         
                     }
                 }
             }
-            completion(photoURLs, error)
+            completion(photos, error)
+            print(photos)
         }
     }
 }

@@ -17,6 +17,9 @@
 		805F1ACA29BB5A2A006C15A2 /* FlickImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 805F1AC929BB5A2A006C15A2 /* FlickImage.swift */; };
 		805F1ACE29BB5AEB006C15A2 /* FlickerApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 805F1ACB29BB5AEB006C15A2 /* FlickerApi.swift */; };
 		805F1ACF29BB5AEB006C15A2 /* FlickrApi.m in Sources */ = {isa = PBXBuildFile; fileRef = 805F1ACC29BB5AEB006C15A2 /* FlickrApi.m */; };
+		805F1AD129BB6C10006C15A2 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 805F1AD029BB6C10006C15A2 /* Extensions.swift */; };
+		808F791A29BB7EE400760D55 /* LoadingOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 808F791929BB7EE400760D55 /* LoadingOverlay.swift */; };
+		808F791D29BB8A1800760D55 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 808F791C29BB8A1800760D55 /* TabBarController.swift */; };
 		E3F2831F9F2C8EF141DFDAF9 /* libPods-JodelChallenge.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 310774A51D73A513D7854CD7 /* libPods-JodelChallenge.a */; };
 /* End PBXBuildFile section */
 
@@ -49,6 +52,9 @@
 		805F1ACB29BB5AEB006C15A2 /* FlickerApi.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlickerApi.swift; sourceTree = "<group>"; };
 		805F1ACC29BB5AEB006C15A2 /* FlickrApi.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FlickrApi.m; sourceTree = "<group>"; };
 		805F1ACD29BB5AEB006C15A2 /* FlickrApi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlickrApi.h; sourceTree = "<group>"; };
+		805F1AD029BB6C10006C15A2 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		808F791929BB7EE400760D55 /* LoadingOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingOverlay.swift; sourceTree = "<group>"; };
+		808F791C29BB8A1800760D55 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		A7096B2AF22017DBA2B785C4 /* Pods-JodelChallenge.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JodelChallenge.release.xcconfig"; path = "Pods/Target Support Files/Pods-JodelChallenge/Pods-JodelChallenge.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -74,8 +80,9 @@
 		0A3FEA1122C4DF2C0007A257 /* Screens */ = {
 			isa = PBXGroup;
 			children = (
-				0A0367FA22C4E2BE0041C31E /* FeedViewController.swift */,
-				0A0367FC22C4E5DC0041C31E /* FeedCell.swift */,
+				3FBCC7441F73AE9200D35147 /* AppDelegate.swift */,
+				808F791B29BB7EF900760D55 /* View */,
+				805F1AD429BB7EB0006C15A2 /* Controller */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -122,15 +129,15 @@
 		3FBCC7431F73AE9200D35147 /* JodelChallenge */ = {
 			isa = PBXGroup;
 			children = (
+				3F89F9C91F73AF8A002A3FCB /* NetworkAPI */,
 				805F1ABF29BB5995006C15A2 /* Model */,
 				0A3FEA1122C4DF2C0007A257 /* Screens */,
-				3F89F9C91F73AF8A002A3FCB /* NetworkAPI */,
-				3FBCC7441F73AE9200D35147 /* AppDelegate.swift */,
 				3FBCC7481F73AE9200D35147 /* Main.storyboard */,
 				3FBCC74B1F73AE9200D35147 /* Assets.xcassets */,
 				3FBCC74D1F73AE9200D35147 /* LaunchScreen.storyboard */,
 				3FBCC7501F73AE9200D35147 /* Info.plist */,
 				3F89F9CC1F73AFFC002A3FCB /* JodelChallenge-Bridging-Header.h */,
+				805F1AD029BB6C10006C15A2 /* Extensions.swift */,
 			);
 			path = JodelChallenge;
 			sourceTree = "<group>";
@@ -158,6 +165,25 @@
 				805F1AC929BB5A2A006C15A2 /* FlickImage.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		805F1AD429BB7EB0006C15A2 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				808F791C29BB8A1800760D55 /* TabBarController.swift */,
+				0A0367FA22C4E2BE0041C31E /* FeedViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		808F791B29BB7EF900760D55 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				0A0367FC22C4E5DC0041C31E /* FeedCell.swift */,
+				808F791929BB7EE400760D55 /* LoadingOverlay.swift */,
+			);
+			name = View;
+			path = Controller/View;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -290,9 +316,12 @@
 				0A0367FB22C4E2BE0041C31E /* FeedViewController.swift in Sources */,
 				3FBCC7451F73AE9200D35147 /* AppDelegate.swift in Sources */,
 				0A0367FD22C4E5DC0041C31E /* FeedCell.swift in Sources */,
+				808F791D29BB8A1800760D55 /* TabBarController.swift in Sources */,
+				805F1AD129BB6C10006C15A2 /* Extensions.swift in Sources */,
 				805F1ACF29BB5AEB006C15A2 /* FlickrApi.m in Sources */,
 				805F1ACA29BB5A2A006C15A2 /* FlickImage.swift in Sources */,
 				805F1ACE29BB5AEB006C15A2 /* FlickerApi.swift in Sources */,
+				808F791A29BB7EE400760D55 /* LoadingOverlay.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
