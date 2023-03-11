@@ -13,18 +13,6 @@ class FeedCell : UICollectionViewCell {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var imageView: UIImageView!
     
-    public func configure(with imageUrl: URL) {
-        DispatchQueue.global().async {
-            if let data = try? Data(contentsOf: imageUrl) {
-                let image = UIImage(data: data)
-                DispatchQueue.main.async {
-                    self.imageView.image = image
-                }
-            }
-        }
-    }
-    
-    
     override func awakeFromNib() {
         super.awakeFromNib()
 

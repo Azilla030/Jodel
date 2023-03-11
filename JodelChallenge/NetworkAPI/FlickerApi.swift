@@ -44,7 +44,7 @@ class FlickrApiSwift {
             }
             
             completion(photos, error)
-            print(photos)
+            //print(photos)
         }
     }
 }

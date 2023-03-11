@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SDWebImage
 
 class FeedViewController : UICollectionViewController, UINavigationBarDelegate {
     
@@ -111,7 +112,8 @@ class FeedViewController : UICollectionViewController, UINavigationBarDelegate {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "FeedCell", for: indexPath) as! FeedCell
         let photo = flickrPhotos[indexPath.row]
         cell.titleLabel.text = photo.title
-        cell.configure(with: flickrPhotos[indexPath.row].url)
+        cell.imageView.sd_setImage(with: flickrPhotos[indexPath.row].url, placeholderImage: nil)
+
         
         return cell
     }
