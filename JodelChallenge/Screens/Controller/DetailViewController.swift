@@ -31,7 +31,6 @@ class DetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = .black
         
         // Add the image view to the view controller's view
         view.addSubview(imageView)

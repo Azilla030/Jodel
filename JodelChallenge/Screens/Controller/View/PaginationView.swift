@@ -38,19 +38,24 @@ class PaginationView: UIView {
     }
 
     private func setupViews() {
-        backgroundColor = .white
+        backgroundColor = UIColor.init(hex: "#ff8e00")
 
-        previousButton.setTitle("<<", for: .normal)
+
+        previousButton.setImage(UIImage(systemName: "arrow.left"), for: .normal)
+        previousButton.tintColor = .white
         previousButton.addTarget(self, action: #selector(showPreviousPage), for: .touchUpInside)
         addSubview(previousButton)
 
-        nextButton.setTitle(">>", for: .normal)
+        
+        nextButton.setImage(UIImage(systemName: "arrow.right"), for: .normal)
+        nextButton.tintColor = .white
         nextButton.addTarget(self, action: #selector(showNextPage), for: .touchUpInside)
         addSubview(nextButton)
 
         addSubview(currentPageLabel)
         
         currentPageLabel.text = "1"
+        currentPageLabel.textColor = .white
 
         previousButton.translatesAutoresizingMaskIntoConstraints = false
         nextButton.translatesAutoresizingMaskIntoConstraints = false
