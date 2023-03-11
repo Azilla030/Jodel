@@ -31,6 +31,9 @@ class FeedViewController : UICollectionViewController, UINavigationBarDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPressGesture(_:)))
+        
         navigationController?.navigationBar.delegate = self
         
         let layout = UICollectionViewFlowLayout()
@@ -44,6 +47,8 @@ class FeedViewController : UICollectionViewController, UINavigationBarDelegate {
         
     
         view.addSubview(paginationView)
+        
+        collectionView.addGestureRecognizer(longPressGesture)
 
         loadingOverlay = LoadingOverlay(frame: view.bounds)
         view.addSubview(loadingOverlay!)
@@ -64,23 +69,6 @@ class FeedViewController : UICollectionViewController, UINavigationBarDelegate {
             }
         }
     }
-    
-    func fetchFlickrPhotos() {
-        loadingOverlay?.isHidden = false
-        FlickrApiSwift.shared.fetchPhotos(page: currentPage, perPage: itemsPerPage) { (photos, error) in
-            if let photos = photos {
-                self.flickrPhotos.removeAll() // Leere das Array, bevor du neue Fotos hinzufügst
-                self.flickrPhotos = photos
-                DispatchQueue.main.async {
-                    self.loadingOverlay?.isHidden = true
-                    self.collectionView.reloadData()
-                }
-            } else {
-                print("Error fetching Flickr photos: \(error?.localizedDescription ?? "Unknown error")")
-            }
-        }
-    }
-    
     
     override func viewDidLayoutSubviews() {
         
@@ -113,11 +101,45 @@ class FeedViewController : UICollectionViewController, UINavigationBarDelegate {
         let photo = flickrPhotos[indexPath.row]
         cell.titleLabel.text = photo.title
         cell.imageView.sd_setImage(with: flickrPhotos[indexPath.row].url, placeholderImage: nil)
-
+        
+        // Add a tag to identify the cell's image view
+        cell.imageView.tag = indexPath.row
         
         return cell
     }
     
+    
+    func fetchFlickrPhotos() {
+        loadingOverlay?.isHidden = false
+        FlickrApiSwift.shared.fetchPhotos(page: currentPage, perPage: itemsPerPage) { (photos, error) in
+            if let photos = photos {
+                self.flickrPhotos.removeAll() // Leere das Array, bevor du neue Fotos hinzufügst
+                self.flickrPhotos = photos
+                DispatchQueue.main.async {
+                    self.loadingOverlay?.isHidden = true
+                    self.collectionView.reloadData()
+                }
+            } else {
+                print("Error fetching Flickr photos: \(error?.localizedDescription ?? "Unknown error")")
+            }
+        }
+    }
+    
+    @objc func handleLongPressGesture(_ gestureRecognizer: UILongPressGestureRecognizer) {
+        if gestureRecognizer.state == .began {
+            // Anzeigen des Detail View Controllers
+            let point = gestureRecognizer.location(in: self.collectionView)
+            if let indexPath = self.collectionView.indexPathForItem(at: point) {
+                let detailVC = storyboard?.instantiateViewController(withIdentifier: "DetailViewController") as! DetailViewController
+                detailVC.selectedPhoto = flickrPhotos[indexPath.row]
+                detailVC.modalPresentationStyle = .overFullScreen
+                present(detailVC, animated: false, completion: nil)
+            }
+        } else if gestureRecognizer.state == .ended {
+            // Ausblenden des Detail View Controllers
+            dismiss(animated: false, completion: nil)
+        }
+    }
     
 }
 
