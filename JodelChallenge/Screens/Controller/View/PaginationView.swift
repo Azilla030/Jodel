@@ -49,6 +49,8 @@ class PaginationView: UIView {
         addSubview(nextButton)
 
         addSubview(currentPageLabel)
+        
+        currentPageLabel.text = "1"
 
         previousButton.translatesAutoresizingMaskIntoConstraints = false
         nextButton.translatesAutoresizingMaskIntoConstraints = false

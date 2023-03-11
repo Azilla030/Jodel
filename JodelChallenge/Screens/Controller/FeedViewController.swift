@@ -26,7 +26,7 @@ class FeedViewController : UICollectionViewController, UINavigationBarDelegate {
         }
     }
     
-    private let itemsPerPage = 30
+    private let itemsPerPage = 7
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,7 +44,6 @@ class FeedViewController : UICollectionViewController, UINavigationBarDelegate {
     
         view.addSubview(paginationView)
 
-        
         loadingOverlay = LoadingOverlay(frame: view.bounds)
         view.addSubview(loadingOverlay!)
         
@@ -64,6 +63,23 @@ class FeedViewController : UICollectionViewController, UINavigationBarDelegate {
             }
         }
     }
+    
+    func fetchFlickrPhotos() {
+        loadingOverlay?.isHidden = false
+        FlickrApiSwift.shared.fetchPhotos(page: currentPage, perPage: itemsPerPage) { (photos, error) in
+            if let photos = photos {
+                self.flickrPhotos.removeAll() // Leere das Array, bevor du neue Fotos hinzufügst
+                self.flickrPhotos = photos
+                DispatchQueue.main.async {
+                    self.loadingOverlay?.isHidden = true
+                    self.collectionView.reloadData()
+                }
+            } else {
+                print("Error fetching Flickr photos: \(error?.localizedDescription ?? "Unknown error")")
+            }
+        }
+    }
+    
     
     override func viewDidLayoutSubviews() {
         
@@ -85,29 +101,12 @@ class FeedViewController : UICollectionViewController, UINavigationBarDelegate {
         ])
     }
     
-
-    func fetchFlickrPhotos() {
-        loadingOverlay?.isHidden = false
-        FlickrApiSwift.fetchPhotos(page: currentPage, perPage: itemsPerPage) { (photos, error) in
-            if let photos = photos {
-                self.flickrPhotos.removeAll() // Leere das Array, bevor du neue Fotos hinzufügst
-                self.flickrPhotos = photos
-                DispatchQueue.main.async {
-                    self.loadingOverlay?.isHidden = true
-                    self.collectionView.reloadData()
-                }
-            } else {
-                print("Error fetching Flickr photos: \(error?.localizedDescription ?? "Unknown error")")
-            }
-        }
-    }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return flickrPhotos.count
     }
     
     
-   
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "FeedCell", for: indexPath) as! FeedCell
         let photo = flickrPhotos[indexPath.row]
