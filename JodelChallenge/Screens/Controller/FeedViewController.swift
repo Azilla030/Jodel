@@ -19,13 +19,17 @@ class FeedViewController : UICollectionViewController, UINavigationBarDelegate {
     
     let paginationView = PaginationView()
     
-    var totalPages = 30
+    var totalPages = 9
     
     var currentPage = 1 {
         didSet {
-            paginationView.updateCurrentPageLabel(currentPage: currentPage)
+            paginationView.updateCurrentPageLabel(currentPage: currentPage, totalPage: totalPages)
         }
     }
+    
+    var isRefreshing = false
+    
+    let refreshControl = UIRefreshControl()
     
     private let itemsPerPage = 7
     
@@ -33,6 +37,7 @@ class FeedViewController : UICollectionViewController, UINavigationBarDelegate {
         super.viewDidLoad()
         
         let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPressGesture(_:)))
+        
         
         navigationController?.navigationBar.delegate = self
         
@@ -44,6 +49,12 @@ class FeedViewController : UICollectionViewController, UINavigationBarDelegate {
         collectionView.collectionViewLayout = layout
         
         fetchFlickrPhotos()
+        
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(refreshCollectionView(_:)), for: .valueChanged)
+        collectionView.refreshControl = refreshControl
+        
+        collectionView.alwaysBounceVertical = true
         
     
         view.addSubview(paginationView)
@@ -139,6 +150,11 @@ class FeedViewController : UICollectionViewController, UINavigationBarDelegate {
             // Ausblenden des Detail View Controllers
             dismiss(animated: false, completion: nil)
         }
+    }
+    
+    @objc private func refreshCollectionView(_ sender: UIRefreshControl) {
+        fetchFlickrPhotos()
+        sender.endRefreshing()
     }
     
 }

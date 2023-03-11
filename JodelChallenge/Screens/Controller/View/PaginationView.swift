@@ -14,15 +14,15 @@ class PaginationView: UIView {
 
     var currentPage = 1 {
         didSet {
-            currentPageLabel.text = "\(currentPage)"
+            currentPageLabel.text = "\(currentPage) of \(totalPages)"
         }
     }
 //
-//    var totalPages = 1 {
-//        didSet {
-//            updateCurrentPageLabel()
-//        }
-//    }
+    var totalPages = 1 {
+        didSet {
+            currentPageLabel.text = "\(currentPage) of \(totalPages)"
+        }
+    }
 
     var previousButtonHandler: (() -> Void)?
     var nextButtonHandler: (() -> Void)?
@@ -54,7 +54,7 @@ class PaginationView: UIView {
 
         addSubview(currentPageLabel)
         
-        currentPageLabel.text = "1"
+        currentPageLabel.text = "1 of 1"
         currentPageLabel.textColor = .white
 
         previousButton.translatesAutoresizingMaskIntoConstraints = false
@@ -81,8 +81,9 @@ class PaginationView: UIView {
         nextButtonHandler?()
     }
 
-    func updateCurrentPageLabel(currentPage: Int) {
+    func updateCurrentPageLabel(currentPage: Int, totalPage: Int) {
         self.currentPage = currentPage
+        self.totalPages = totalPage
     }
 }
 
