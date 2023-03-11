@@ -20,6 +20,9 @@
 		805F1AD129BB6C10006C15A2 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 805F1AD029BB6C10006C15A2 /* Extensions.swift */; };
 		808F791A29BB7EE400760D55 /* LoadingOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 808F791929BB7EE400760D55 /* LoadingOverlay.swift */; };
 		808F791D29BB8A1800760D55 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 808F791C29BB8A1800760D55 /* TabBarController.swift */; };
+		80F96BF529BBE79400E3BE87 /* MyPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80F96BF429BBE79400E3BE87 /* MyPageViewController.swift */; };
+		80F96BF729BBEAC100E3BE87 /* NavigationControllerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80F96BF629BBEAC100E3BE87 /* NavigationControllerViewController.swift */; };
+		80F96BF929BCD0D400E3BE87 /* PaginationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80F96BF829BCD0D400E3BE87 /* PaginationView.swift */; };
 		E3F2831F9F2C8EF141DFDAF9 /* libPods-JodelChallenge.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 310774A51D73A513D7854CD7 /* libPods-JodelChallenge.a */; };
 /* End PBXBuildFile section */
 
@@ -55,6 +58,9 @@
 		805F1AD029BB6C10006C15A2 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		808F791929BB7EE400760D55 /* LoadingOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingOverlay.swift; sourceTree = "<group>"; };
 		808F791C29BB8A1800760D55 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
+		80F96BF429BBE79400E3BE87 /* MyPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewController.swift; sourceTree = "<group>"; };
+		80F96BF629BBEAC100E3BE87 /* NavigationControllerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationControllerViewController.swift; sourceTree = "<group>"; };
+		80F96BF829BCD0D400E3BE87 /* PaginationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaginationView.swift; sourceTree = "<group>"; };
 		A7096B2AF22017DBA2B785C4 /* Pods-JodelChallenge.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JodelChallenge.release.xcconfig"; path = "Pods/Target Support Files/Pods-JodelChallenge/Pods-JodelChallenge.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -172,6 +178,8 @@
 			children = (
 				808F791C29BB8A1800760D55 /* TabBarController.swift */,
 				0A0367FA22C4E2BE0041C31E /* FeedViewController.swift */,
+				80F96BF429BBE79400E3BE87 /* MyPageViewController.swift */,
+				80F96BF629BBEAC100E3BE87 /* NavigationControllerViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -181,6 +189,7 @@
 			children = (
 				0A0367FC22C4E5DC0041C31E /* FeedCell.swift */,
 				808F791929BB7EE400760D55 /* LoadingOverlay.swift */,
+				80F96BF829BCD0D400E3BE87 /* PaginationView.swift */,
 			);
 			name = View;
 			path = Controller/View;
@@ -313,11 +322,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				80F96BF929BCD0D400E3BE87 /* PaginationView.swift in Sources */,
 				0A0367FB22C4E2BE0041C31E /* FeedViewController.swift in Sources */,
+				80F96BF729BBEAC100E3BE87 /* NavigationControllerViewController.swift in Sources */,
 				3FBCC7451F73AE9200D35147 /* AppDelegate.swift in Sources */,
 				0A0367FD22C4E5DC0041C31E /* FeedCell.swift in Sources */,
 				808F791D29BB8A1800760D55 /* TabBarController.swift in Sources */,
 				805F1AD129BB6C10006C15A2 /* Extensions.swift in Sources */,
+				80F96BF529BBE79400E3BE87 /* MyPageViewController.swift in Sources */,
 				805F1ACF29BB5AEB006C15A2 /* FlickrApi.m in Sources */,
 				805F1ACA29BB5A2A006C15A2 /* FlickImage.swift in Sources */,
 				805F1ACE29BB5AEB006C15A2 /* FlickerApi.swift in Sources */,

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class FeedViewController : UICollectionViewController {
+class FeedViewController : UICollectionViewController, UINavigationBarDelegate {
     
     var flickrPhotos: [FlickrImage] = []
     
@@ -16,14 +16,21 @@ class FeedViewController : UICollectionViewController {
     
     var isLoading = false // Keep track of whether the app is currently loading new photos
     
-    private var currentPage = 1
-    private let itemsPerPage = 30
+    let paginationView = PaginationView()
     
+    var totalPages = 30
+    
+    var currentPage = 1 {
+        didSet {
+            paginationView.updateCurrentPageLabel(currentPage: currentPage)
+        }
+    }
+    
+    private let itemsPerPage = 30
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        fetchFlickrPhotos()
+        navigationController?.navigationBar.delegate = self
         
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
@@ -32,15 +39,43 @@ class FeedViewController : UICollectionViewController {
         layout.minimumInteritemSpacing = 0
         collectionView.collectionViewLayout = layout
         
+        fetchFlickrPhotos()
         
-        let loadMoreButton = UIButton(type: .system)
-        loadMoreButton.setTitle("\(currentPage)", for: .normal)
-        loadMoreButton.addTarget(self, action: #selector(loadMorePhotos), for: .touchUpInside)
-        collectionView.addSubview(loadMoreButton)
+    
+        view.addSubview(paginationView)
+
         
-        // Create the loading overlay view and add it as a subview of the collection view
         loadingOverlay = LoadingOverlay(frame: view.bounds)
         view.addSubview(loadingOverlay!)
+        
+        paginationView.previousButtonHandler = { [weak self] in
+            guard let self = self else { return }
+            if self.currentPage > 1 {
+                self.currentPage -= 1
+                self.fetchFlickrPhotos()
+            }
+        }
+
+        paginationView.nextButtonHandler = { [weak self] in
+            guard let self = self else { return }
+            if self.currentPage < self.totalPages {
+                self.currentPage += 1
+                self.fetchFlickrPhotos()
+            }
+        }
+    }
+    
+    override func viewDidLayoutSubviews() {
+        
+        paginationView.translatesAutoresizingMaskIntoConstraints = false
+
+        NSLayoutConstraint.activate([
+            paginationView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            paginationView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            paginationView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            paginationView.heightAnchor.constraint(equalToConstant: 50)
+        ])
+        
         loadingOverlay!.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             loadingOverlay!.topAnchor.constraint(equalTo: collectionView.topAnchor),
@@ -48,32 +83,9 @@ class FeedViewController : UICollectionViewController {
             loadingOverlay!.leadingAnchor.constraint(equalTo: collectionView.leadingAnchor),
             loadingOverlay!.trailingAnchor.constraint(equalTo: collectionView.trailingAnchor),
         ])
-
-        collectionView.addSubview(loadMoreButton)
-        loadMoreButton.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            loadMoreButton.topAnchor.constraint(equalTo: view.bottomAnchor, constant: -150),
-            loadMoreButton.centerXAnchor.constraint(equalTo: collectionView.centerXAnchor)
-        ])
-        
-        
-        loadMoreButton.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            loadMoreButton.topAnchor.constraint(equalTo: view.bottomAnchor, constant: -150),
-            loadMoreButton.centerXAnchor.constraint(equalTo: collectionView.centerXAnchor)
-        ])
-        
-
     }
     
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        
-        // Position the loading overlay in the center of the collection view
-        loadingOverlay?.center = collectionView.center
-    }
-    
-    
+
     func fetchFlickrPhotos() {
         loadingOverlay?.isHidden = false
         FlickrApiSwift.fetchPhotos(page: currentPage, perPage: itemsPerPage) { (photos, error) in
@@ -88,11 +100,6 @@ class FeedViewController : UICollectionViewController {
                 print("Error fetching Flickr photos: \(error?.localizedDescription ?? "Unknown error")")
             }
         }
-    }
-    
-    @objc func loadMorePhotos() {
-        currentPage += 1
-        fetchFlickrPhotos()
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -112,3 +119,4 @@ class FeedViewController : UICollectionViewController {
     
     
 }
+

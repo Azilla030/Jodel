@@ -9,48 +9,90 @@
 import Foundation
 
 
-class TabBarController: UITableViewController {
+import Foundation
+
+
+class StartTabController: UITabBarController {
     
-    var currentPage = 0
-    var isLoading = false
-    
+    var collectionViewController: UICollectionViewController?
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        loadPage(page: 0)
-    }
-    
-    func loadPage(page: Int) {
-        if isLoading {
-            return
+        
+//        let layout = UICollectionViewFlowLayout()
+//        let collectionViewController = FeedViewController(collectionViewLayout: layout)
+//
+//
+//
+//        self.collectionViewController = collectionViewController
+//        self.viewControllers = [collectionViewController]
+
+        // Hintergrundfarbe der TabBar anpassen
+        self.tabBar.barTintColor = UIColor.init(hex: "#ff8e00")
+        
+        // Textfarbe der TabBar-Elemente anpassen
+        UITabBarItem.appearance().setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.blue], for: .normal)
+        
+
+        
+        tabBarItem.title = ""
+        
+        tabBarItem.isEnabled = false
+        
+        if let index = tabBar.items?.firstIndex(of: tabBarItem) {
+            tabBar.items?.remove(at: index)
         }
+
+        // Eine benutzerdefinierte Ansicht mit Pfeilen und einem Label erstellen
+        let customView = UIView()
         
-        isLoading = true
-        showLoadingOverlay()
+        tabBar.addSubview(customView)
         
-        // Laden der Daten für die aktuelle Seite
-        // ...
+        let leftArrow = UIButton()
+        leftArrow.setImage(UIImage(systemName: "arrow.left"), for:.normal)
         
-        currentPage = page
-        tableView.reloadData()
-        isLoading = false
-        hideLoadingOverlay()
+        let rightArrow = UIButton()
+        rightArrow.setImage(UIImage(systemName: "arrow.right"), for:.normal)
+        
+        let label = UILabel()
+        //label.text = "Seite \(selectedIndex + 1)"
+        
+        customView.addSubview(leftArrow)
+        customView.addSubview(rightArrow)
+        customView.addSubview(label)
+        
+        
+        customView.translatesAutoresizingMaskIntoConstraints = false
+          NSLayoutConstraint.activate([
+              customView.leadingAnchor.constraint(equalTo: tabBar.leadingAnchor),
+              customView.trailingAnchor.constraint(equalTo: tabBar.trailingAnchor),
+              customView.topAnchor.constraint(equalTo: tabBar.topAnchor),
+              customView.bottomAnchor.constraint(equalTo: tabBar.bottomAnchor),
+          ])
+
+          // Constraints für die Pfeil-Buttons und das Label festlegen
+          leftArrow.translatesAutoresizingMaskIntoConstraints = false
+          NSLayoutConstraint.activate([
+              leftArrow.leadingAnchor.constraint(equalTo: customView.leadingAnchor, constant: 10),
+              leftArrow.centerYAnchor.constraint(equalTo: customView.centerYAnchor),
+              leftArrow.widthAnchor.constraint(equalToConstant: 30),
+              leftArrow.heightAnchor.constraint(equalToConstant: 30),
+          ])
+          
+          rightArrow.translatesAutoresizingMaskIntoConstraints = false
+          NSLayoutConstraint.activate([
+              rightArrow.trailingAnchor.constraint(equalTo: customView.trailingAnchor, constant:-10),
+              rightArrow.centerYAnchor.constraint(equalTo:leftArrow.centerYAnchor),
+              rightArrow.widthAnchor.constraint(equalTo:leftArrow.widthAnchor),
+              rightArrow.heightAnchor.constraint(equalTo:leftArrow.heightAnchor)
+          ])
+
+       tabBar.addSubview(customView)
+        
+        
+//        leftArrow.addTarget(self, action: #selector(collectionViewController.loadMorePhotos), for: .touchUpInside)
+//        rightArrow.addTarget(self, action: #selector(collectionViewController.loadMorePhotos), for: .touchUpInside)
     }
     
-    @IBAction func loadNextPage() {
-        loadPage(page: currentPage + 1)
-    }
     
-    @IBAction func loadPreviousPage() {
-        loadPage(page: currentPage - 1)
-    }
-    
-    func showLoadingOverlay() {
-        // Einblenden des Lade-Overlays
-        // ...
-    }
-    
-    func hideLoadingOverlay() {
-        // Ausblenden des Lade-Overlays
-        // ...
-    }
 }
