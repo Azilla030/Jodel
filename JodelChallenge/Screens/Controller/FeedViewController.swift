@@ -11,7 +11,7 @@ import SDWebImage
 
 class FeedViewController : UICollectionViewController, UINavigationBarDelegate {
     
-    var flickrPhotos: [FlickrImage] = []
+    
     
     var loadingOverlay: LoadingOverlay?
     
@@ -26,6 +26,11 @@ class FeedViewController : UICollectionViewController, UINavigationBarDelegate {
             paginationView.updateCurrentPageLabel(currentPage: currentPage, totalPage: totalPages)
         }
     }
+    
+    let flickrApiService = FlickrApiService()
+    
+    var flickrPhotos: [FlickrImage] = []
+
     
     var isRefreshing = false
     
@@ -122,7 +127,7 @@ class FeedViewController : UICollectionViewController, UINavigationBarDelegate {
     
     func fetchFlickrPhotos() {
         loadingOverlay?.isHidden = false
-        FlickrApiSwift.shared.fetchPhotos(page: currentPage, perPage: itemsPerPage) { (photos, error) in
+        flickrApiService.fetchPhotos(page: currentPage, perPage: itemsPerPage) { (photos, error) in
             if let photos = photos {
                 self.flickrPhotos.removeAll() // Leere das Array, bevor du neue Fotos hinzufügst
                 self.flickrPhotos = photos
@@ -135,7 +140,7 @@ class FeedViewController : UICollectionViewController, UINavigationBarDelegate {
             }
         }
     }
-    
+
     @objc func handleLongPressGesture(_ gestureRecognizer: UILongPressGestureRecognizer) {
         if gestureRecognizer.state == .began {
             // Anzeigen des Detail View Controllers
