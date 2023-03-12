@@ -36,6 +36,7 @@ class FeedViewController : UICollectionViewController, UINavigationBarDelegate {
     
     var flickrPhotos: [FlickrImage] = []
     
+
     let refreshControl = UIRefreshControl()
     
     
@@ -138,6 +139,11 @@ class FeedViewController : UICollectionViewController, UINavigationBarDelegate {
                 }
             } else {
                 print("Error fetching Flickr photos: \(error?.localizedDescription ?? "Unknown error")")
+                DispatchQueue.main.async {
+                    let alert = UIAlertController(title: "Error", message: error?.localizedDescription ?? "Unknown error", preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                    UIApplication.shared.keyWindow?.rootViewController?.present(alert, animated: true, completion: nil)
+                }
             }
         }
     }
