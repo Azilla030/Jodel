@@ -2,7 +2,7 @@
 //  FlickrApiService.swift
 //  JodelChallenge
 //
-//  Created by Alexander Ruder on 12.03.23.
+//  Created by Alexander - on 12.03.23.
 //  Copyright © 2023 Jodel. All rights reserved.
 //
 

@@ -2,7 +2,7 @@
 //  File.swift
 //  JodelChallenge
 //
-//  Created by Alexander Ruder on 10.03.23.
+//  Created by Alexander - on 10.03.23.
 //  Copyright © 2023 Jodel. All rights reserved.
 //
 

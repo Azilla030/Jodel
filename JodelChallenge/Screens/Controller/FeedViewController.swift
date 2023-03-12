@@ -11,7 +11,6 @@ import SDWebImage
 
 class FeedViewController : UICollectionViewController, UINavigationBarDelegate {
     
-    
     var longPressHandler: LongPressHandler!
     
     var loadingOverlay: LoadingOverlay?
@@ -37,17 +36,11 @@ class FeedViewController : UICollectionViewController, UINavigationBarDelegate {
     
     var flickrPhotos: [FlickrImage] = []
     
-    
-    
-    
     let refreshControl = UIRefreshControl()
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        //let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPressGesture(_:)))
-        
         
         navigationController?.navigationBar.delegate = self
         
@@ -97,7 +90,6 @@ class FeedViewController : UICollectionViewController, UINavigationBarDelegate {
     override func viewDidLayoutSubviews() {
         
         paginationView.translatesAutoresizingMaskIntoConstraints = false
-        
         NSLayoutConstraint.activate([
             paginationView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             paginationView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
