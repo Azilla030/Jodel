@@ -17,7 +17,7 @@ class PaginationView: UIView {
             currentPageLabel.text = "\(currentPage) of \(totalPages)"
         }
     }
-//
+    
     var totalPages = 1 {
         didSet {
             currentPageLabel.text = "\(currentPage) of \(totalPages)"

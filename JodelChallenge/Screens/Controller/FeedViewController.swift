@@ -12,14 +12,20 @@ import SDWebImage
 class FeedViewController : UICollectionViewController, UINavigationBarDelegate {
     
     
+    var longPressHandler: LongPressHandler!
     
     var loadingOverlay: LoadingOverlay?
     
-    var isLoading = false // Keep track of whether the app is currently loading new photos
+    var isLoading = false
+    
+    var isRefreshing = false
     
     let paginationView = PaginationView()
     
+    private let itemsPerPage = 7
+    
     var totalPages = 9
+    
     
     var currentPage = 1 {
         didSet {
@@ -30,18 +36,17 @@ class FeedViewController : UICollectionViewController, UINavigationBarDelegate {
     let flickrApiService = FlickrApiService()
     
     var flickrPhotos: [FlickrImage] = []
-
     
-    var isRefreshing = false
+    
+    
     
     let refreshControl = UIRefreshControl()
     
-    private let itemsPerPage = 7
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPressGesture(_:)))
+        //let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPressGesture(_:)))
         
         
         navigationController?.navigationBar.delegate = self
@@ -61,11 +66,14 @@ class FeedViewController : UICollectionViewController, UINavigationBarDelegate {
         
         collectionView.alwaysBounceVertical = true
         
-    
+        
         view.addSubview(paginationView)
         
+        longPressHandler = LongPressHandler(collectionView: collectionView, viewController: self, flickrPhotos: flickrPhotos)
+        let longPressGesture = UILongPressGestureRecognizer(target: longPressHandler, action: #selector(longPressHandler.handleLongPressGesture(_:)))
         collectionView.addGestureRecognizer(longPressGesture)
-
+        
+        
         loadingOverlay = LoadingOverlay(frame: view.bounds)
         view.addSubview(loadingOverlay!)
         
@@ -76,7 +84,7 @@ class FeedViewController : UICollectionViewController, UINavigationBarDelegate {
                 self.fetchFlickrPhotos()
             }
         }
-
+        
         paginationView.nextButtonHandler = { [weak self] in
             guard let self = self else { return }
             if self.currentPage < self.totalPages {
@@ -89,7 +97,7 @@ class FeedViewController : UICollectionViewController, UINavigationBarDelegate {
     override func viewDidLayoutSubviews() {
         
         paginationView.translatesAutoresizingMaskIntoConstraints = false
-
+        
         NSLayoutConstraint.activate([
             paginationView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             paginationView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
@@ -127,10 +135,11 @@ class FeedViewController : UICollectionViewController, UINavigationBarDelegate {
     
     func fetchFlickrPhotos() {
         loadingOverlay?.isHidden = false
-        flickrApiService.fetchPhotos(page: currentPage, perPage: itemsPerPage) { (photos, error) in
+        flickrApiService.fetchPhotos(page: currentPage, perPage: itemsPerPage) { [self] (photos, error) in
             if let photos = photos {
                 self.flickrPhotos.removeAll() // Leere das Array, bevor du neue Fotos hinzufügst
                 self.flickrPhotos = photos
+                self.longPressHandler.updateFlickrPhotos(self.flickrPhotos)
                 DispatchQueue.main.async {
                     self.loadingOverlay?.isHidden = true
                     self.collectionView.reloadData()
@@ -138,22 +147,6 @@ class FeedViewController : UICollectionViewController, UINavigationBarDelegate {
             } else {
                 print("Error fetching Flickr photos: \(error?.localizedDescription ?? "Unknown error")")
             }
-        }
-    }
-
-    @objc func handleLongPressGesture(_ gestureRecognizer: UILongPressGestureRecognizer) {
-        if gestureRecognizer.state == .began {
-            // Anzeigen des Detail View Controllers
-            let point = gestureRecognizer.location(in: self.collectionView)
-            if let indexPath = self.collectionView.indexPathForItem(at: point) {
-                let detailVC = storyboard?.instantiateViewController(withIdentifier: "DetailViewController") as! DetailViewController
-                detailVC.selectedPhoto = flickrPhotos[indexPath.row]
-                detailVC.modalPresentationStyle = .overFullScreen
-                present(detailVC, animated: false, completion: nil)
-            }
-        } else if gestureRecognizer.state == .ended {
-            // Ausblenden des Detail View Controllers
-            dismiss(animated: false, completion: nil)
         }
     }
     
